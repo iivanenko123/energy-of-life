@@ -516,7 +516,7 @@
             }
         });
 
-        // --- Form Handling ---
+        // --- Form Handling (НОВАЯ ВЕРСИЯ ДЛЯ ТЕЛЕГРАМ) ---
         function scrollToContact(tariffName) {
             const select = document.getElementById('tariffSelect');
             if(tariffName) {
@@ -525,21 +525,63 @@
             document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
             const originalText = btn.innerText;
             
-            btn.innerText = "Отправлено!";
-            btn.classList.add('bg-green-600');
-            
-            alert("Спасибо за заявку! Мы свяжемся с вами в ближайшее время в Telegram.");
-            
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.classList.remove('bg-green-600');
-                e.target.reset();
-            }, 3000);
+            // 1. Собираем данные из полей
+            // ВАЖНО: Я добавил id="nameInput" и id="contactInput" в HTML ниже, проверьте!
+            const formData = {
+                name: form.querySelector('input[placeholder="Ваше имя"]').value,
+                contact: form.querySelector('input[placeholder="@username или номер"]').value,
+                tariff: document.getElementById('tariffSelect').value,
+                comment: form.querySelector('textarea').value
+            };
+
+            // Меняем кнопку на "Отправка..."
+            btn.innerText = "Отправка...";
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+
+            try {
+                // 2. Отправляем данные нашему "Секретному почтальону" (/api/telegram)
+                const response = await fetch('/api/telegram', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Успех!
+                    btn.innerText = "Отправлено!";
+                    btn.classList.remove('opacity-50');
+                    btn.classList.add('bg-green-600');
+                    alert("Спасибо за заявку! Данные успешно отправлены в Telegram.");
+                    form.reset();
+                } else {
+                    throw new Error(result.error || 'Ошибка отправки');
+                }
+
+            } catch (error) {
+                // Ошибка
+                console.error('Error:', error);
+                alert("Произошла ошибка при отправке. Пожалуйста, попробуйте позже или напишите нам напрямую.");
+                btn.innerText = "Ошибка";
+                btn.classList.add('bg-red-600');
+            } finally {
+                // Возвращаем кнопку в исходное состояние через 3 секунды
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('bg-green-600', 'bg-red-600', 'opacity-50');
+                }, 3000);
+            }
         }
     </script>
 </body>
