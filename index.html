@@ -1,587 +1,308 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Энергия Жизни | Авторский курс Ирины Иваненко</title>
-    
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Энергия Жизни | Авторский курс Ирины Иваненко</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050510;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Фон со звездами */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+
+        /* Эффект стекла */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Свечение текста */
+        .glow-text {
+            text-shadow: 0 0 20px rgba(100, 200, 255, 0.5);
+        }
+
+        /* Градиентный текст */
+        .gradient-text {
+            background: linear-gradient(to right, #a5f3fc, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; 
+        }
+
+        /* Анимация появления секций */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Стили для таймлайна */
+        .timeline-container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            z-index: 0;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(180deg, 
+                rgba(34, 211, 238, 0) 0%, 
+                rgba(168, 85, 247, 0.5) 20%, 
+                rgba(34, 211, 238, 1) 80%, 
+                rgba(34, 211, 238, 0) 100%
+            );
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+            border-radius: 4px;
+        }
+
+        .timeline-arrow-head {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 20px solid #22d3ee;
+            filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.8));
+            animation: pulse-arrow 2s infinite;
+        }
+
+        @keyframes pulse-arrow {
+            0% { filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.8)); transform: translateX(-50%) scale(1); }
+            50% { filter: drop-shadow(0 0 15px rgba(34, 211, 238, 1)); transform: translateX(-50%) scale(1.1); }
+            100% { filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.8)); transform: translateX(-50%) scale(1); }
+        }
+    </style>
 </head>
 <body class="antialiased">
 
-    <canvas id="starfield"></canvas>
+    <canvas id="starfield"></canvas>
 
-    <nav class="fixed w-full z-50 glass-panel border-b-0 border-white/10 transition-all duration-300" id="navbar">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex-shrink-0">
-                    <span class="serif-font text-2xl font-bold tracking-wider text-white">Энергия Жизни</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#about" class="hover:text-cyan-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">Об авторе</a>
-                        <a href="#program" class="hover:text-cyan-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">Программа</a>
-                        <a href="#tariffs" class="hover:text-cyan-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">Тарифы</a>
-                        <a href="#contact" class="bg-cyan-900/50 hover:bg-cyan-800 border border-cyan-500/30 px-4 py-2 rounded-full text-sm transition-all">Записаться</a>
-                    </div>
-                </div>
-                <div class="-mr-2 flex md:hidden">
-                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="hidden md:hidden glass-panel" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">Об авторе</a>
-                <a href="#program" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">Программа</a>
-                <a href="#tariffs" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">Тарифы</a>
-            </div>
-        </div>
-    </nav>
+    <nav class="fixed w-full z-50 glass-panel border-b-0 border-white/10 transition-all duration-300" id="navbar">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <span class="serif-font text-2xl font-bold tracking-wider text-white">Энергия Жизни</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="hover:text-cyan-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">Об авторе</a>
+                        <a href="#program" class="hover:text-cyan-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">Программа</a>
+                        <a href="#tariffs" class="hover:text-cyan-300 transition-colors px-3 py-2 rounded-md text-sm font-medium">Тарифы</a>
+                        <a href="#contact" class="bg-cyan-900/50 hover:bg-cyan-800 border border-cyan-500/30 px-4 py-2 rounded-full text-sm transition-all">Записаться</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hidden md:hidden glass-panel" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">Об авторе</a>
+                <a href="#program" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">Программа</a>
+                <a href="#tariffs" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10">Тарифы</a>
+            </div>
+        </div>
+    </nav>
 
-    <section class="relative h-screen flex items-center justify-center text-center px-4">
-        <div class="z-10 max-w-4xl mx-auto space-y-8 fade-in-section">
-            <p class="text-cyan-300 tracking-[0.3em] uppercase text-sm md:text-base">Авторский курс Ирины Иваненко</p>
-            <h1 class="text-5xl md:text-7xl font-bold leading-tight glow-text">
-                Онлайн-курс <br>
-                <span class="gradient-text serif-font italic">Энергия жизни</span>
-            </h1>
-            <p class="text-lg md:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
-                Это глубокое исследование природы энергии и создание личной Энергокарты. Вы получите целостную систему и ясный взгляд на свою жизнь, чтобы управлять ресурсом, а не терять его.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-                <a href="#tariffs" class="px-8 py-4 bg-gradient-to-r from-cyan-900 to-blue-900 border border-cyan-500/50 rounded-full text-white hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-300 transform hover:-translate-y-1">
-                    Присоединиться к курсу
-                </a>
-                <a href="#about" class="px-8 py-4 bg-transparent border border-white/20 rounded-full text-white hover:bg-white/5 transition-all duration-300">
-                    Подробности
-                </a>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50">
-            <i class="fas fa-chevron-down text-2xl"></i>
-        </div>
-    </section>
+    <section class="relative h-screen flex items-center justify-center text-center px-4">
+        <div class="z-10 max-w-4xl mx-auto space-y-8 fade-in-section">
+            <p class="text-cyan-300 tracking-[0.3em] uppercase text-sm md:text-base">Авторский курс Ирины Иваненко</p>
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight glow-text">
+                Онлайн-курс <br>
+                <span class="gradient-text serif-font italic">Энергия жизни</span>
+            </h1>
+            <p class="text-lg md:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed font-light">
+                Это глубокое исследование природы энергии и создание личной Энергокарты. Вы получите целостную систему и ясный взгляд на свою жизнь, чтобы управлять ресурсом, а не терять его.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                <a href="#tariffs" class="px-8 py-4 bg-gradient-to-r from-cyan-900 to-blue-900 border border-cyan-500/50 rounded-full text-white hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-300 transform hover:-translate-y-1">
+                    Присоединиться к курсу
+                </a>
+                <a href="#about" class="px-8 py-4 bg-transparent border border-white/20 rounded-full text-white hover:bg-white/5 transition-all duration-300">
+                    Подробности
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
 
-    <section class="py-20 bg-black/30">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center fade-in-section">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Всё понимаете, <span class="text-purple-400">а сил действовать - нет?</span></h2>
-                    <div class="space-y-6 text-gray-300">
-                        <p class="text-lg">
-                            Знания есть, опыт есть, а энергии на реализацию не хватает. Вы живете в режиме «энергосбережения», утопая в рутине. Вы стоите на месте, а усталость только копится.
-                        </p>
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-[8px] text-cyan-400 mt-2 mr-3"></i>
-                                <span><span class="font-medium text-white">Вы ищите глубину.</span> Вам важно разобраться в себе, а не просто получить набор знаний.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-[8px] text-cyan-400 mt-2 mr-3"></i>
-                                <span><span class="font-medium text-white">Вам важна экологичность.</span> Вы хотите восстановить ресурс без насилия над собой и жесткой дисциплины.</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-circle text-[8px] text-cyan-400 mt-2 mr-3"></i>
-                                <span><span class="font-medium text-white">Вы готовы к правде.</span> Вы понимаете - чтобы что-то изменить, нужно сначала увидеть реальность такой, какая она есть, без иллюзий.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-2xl blur-2xl opacity-20"></div>
-                    <div class="relative glass-panel p-8 rounded-2xl border border-white/10">
-                        <h3 class="serif-font text-2xl mb-4 text-center">Главная цель</h3>
-                        <p class="text-center text-gray-300 italic">
-                            «Перестать сливать энергию на борьбу с собой и направить её на созидание и осознанность.»
-                        </p>
-                        <div class="mt-6 flex justify-center">
-                            <i class="fas fa-infinity text-4xl text-cyan-300/80"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section class="py-20 bg-black/30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center fade-in-section">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Всё понимаете, <span class="text-purple-400">а сил действовать - нет?</span></h2>
+                    <div class="space-y-6 text-gray-300">
+                        <p class="text-lg">
+                            Знания есть, опыт есть, а энергии на реализацию не хватает. Вы живете в режиме «энергосбережения», утопая в рутине. Вы стоите на месте, а усталость только копится.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-[8px] text-cyan-400 mt-2 mr-3"></i>
+                                <span><span class="font-medium text-white">Вы ищите глубину.</span> Вам важно разобраться в себе, а не просто получить набор знаний.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-[8px] text-cyan-400 mt-2 mr-3"></i>
+                                <span><span class="font-medium text-white">Вам важна экологичность.</span> Вы хотите восстановить ресурс без насилия над собой и жесткой дисциплины.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-circle text-[8px] text-cyan-400 mt-2 mr-3"></i>
+                                <span><span class="font-medium text-white">Вы готовы к правде.</span> Вы понимаете - чтобы что-то изменить, нужно сначала увидеть реальность такой, какая она есть, без иллюзий.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-2xl blur-2xl opacity-20"></div>
+                    <div class="relative glass-panel p-8 rounded-2xl border border-white/10">
+                        <h3 class="serif-font text-2xl mb-4 text-center">Главная цель</h3>
+                        <p class="text-center text-gray-300 italic">
+                            «Перестать сливать энергию на борьбу с собой и направить её на созидание и осознанность.»
+                        </p>
+                        <div class="mt-6 flex justify-center">
+                            <i class="fas fa-infinity text-4xl text-cyan-300/80"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <section id="about" class="py-24 relative overflow-hidden">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="glass-panel rounded-3xl p-8 md:p-12 border border-white/10 fade-in-section">
-                <div class="flex flex-col md:flex-row gap-12 items-center">
-                    <div class="w-48 h-48 md:w-64 md:h-64 flex-shrink-0 relative">
-                        <div class="absolute inset-0 bg-cyan-500 rounded-full blur-2xl opacity-20"></div>
-                        <div class="w-full h-full rounded-full bg-gray-800 border-2 border-cyan-500/30 overflow-hidden relative flex items-center justify-center">
-                            <img src="irina1.jpg" alt="Ирина Иваненко" class="w-full h-full object-cover">
-                            </div>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <p class="text-cyan-400 font-medium tracking-widest uppercase mb-2">Об авторе</p>
-                        <h2 class="text-4xl font-bold mb-6 serif-font">Ирина Иваненко</h2>
-                        <p class="text-lg text-gray-300 mb-6 font-light leading-relaxed">
-                            <strong class="text-white font-normal">Преподаватель медитации и практик осознанности, инженер биомедицинских технологий</strong>.
-                        </p>
-                        <p class="text-gray-400 mb-6">
-                            Мой подход - переводить язык тонких ощущений в четкие, понятные алгоритмы. Уже <span class="text-cyan-300">20 лет</span> я исследую законы жизни, причинно-следственные связи и внутренние процессы человека. Я не предлагаю временных решений, а даю фундаментальные навыки для жизни и учу видеть суть вещей.
-                        </p>
-                        <div class="flex flex-wrap justify-center md:justify-start gap-4">
-                            <span class="px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">Медитация Mindfulness</span>
-                            <span class="px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">Развитие интуиции</span>
-                            <span class="px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">Системное мышление</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section id="about" class="py-24 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 border border-white/10 fade-in-section">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+                    <div class="w-48 h-48 md:w-64 md:h-64 flex-shrink-0 relative">
+                        <div class="absolute inset-0 bg-cyan-500 rounded-full blur-2xl opacity-20"></div>
+                        <div class="w-full h-full rounded-full bg-gray-800 border-2 border-cyan-500/30 overflow-hidden relative flex items-center justify-center">
+                            <img src="irina1.jpg" alt="Ирина Иваненко" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <p class="text-cyan-400 font-medium tracking-widest uppercase mb-2">Об авторе</p>
+                        <h2 class="text-4xl font-bold mb-6 serif-font">Ирина Иваненко</h2>
+                        <p class="text-lg text-gray-300 mb-6 font-light leading-relaxed">
+                            <strong class="text-white font-normal">Преподаватель медитации и практик осознанности, инженер биомедицинских технологий</strong>.
+                        </p>
+                        <p class="text-gray-400 mb-6">
+                            Мой подход - переводить язык тонких ощущений в четкие, понятные алгоритмы. Уже <span class="text-cyan-300">20 лет</span> я исследую законы жизни, причинно-следственные связи и внутренние процессы человека. Я не предлагаю временных решений, а даю фундаментальные навыки для жизни и учу видеть суть вещей.
+                        </p>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">Медитация Mindfulness</span>
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">Развитие интуиции</span>
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-sm border border-white/10">Системное мышление</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <section id="program" class="py-24 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16 fade-in-section">
-                <h2 class="text-4xl font-bold serif-font mb-6">Программа обучения</h2>
-                <div class="max-w-3xl mx-auto text-lg leading-relaxed text-gray-300 space-y-4">
-                    <p>
-                        Мы начнем с Главного — с вашего «Зачем». Мы найдем Смысл, который станет неиссякаемым источником мотивации, а затем подтянем под этот Смысл ваш ум, эмоции и тело.
-                    </p>
-                </div>
-            </div>
+    <section id="program" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-4xl font-bold serif-font mb-6">Программа обучения</h2>
+                <div class="max-w-3xl mx-auto text-lg leading-relaxed text-gray-300 space-y-4">
+                    <p>
+                        Мы начнем с Главного — с вашего «Зачем». Мы найдем Смысл, который станет неиссякаемым источником мотивации, а затем подтянем под этот Смысл ваш ум, эмоции и тело.
+                    </p>
+                </div>
+            </div>
 
-            <div class="relative max-w-6xl mx-auto">
-                
-                <div class="hidden md:block timeline-container">
-                    <div class="timeline-line"></div>
-                    <div class="timeline-arrow-head"></div>
-                </div>
+            <div class="relative max-w-6xl mx-auto">
+                
+                <div class="hidden md:block timeline-container">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-arrow-head"></div>
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 relative">
-                    
-                    <div class="flex flex-col space-y-8">
-                        <div class="text-center md:text-right md:pr-8 mb-4 fade-in-section">
-                            <div class="inline-block glass-panel px-6 py-2 rounded-full border border-pink-500/30 md:border-transparent md:bg-transparent md:glass-panel-none md:p-0">
-                                <h3 class="text-2xl font-bold text-cyan-300 serif-font">Месяц 1. Дух и разум</h3>
-                                <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">описание</p>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24 relative">
+                    
+                    <div class="flex flex-col space-y-8">
+                        <div class="text-center md:text-right md:pr-8 mb-4 fade-in-section">
+                            <div class="inline-block glass-panel px-6 py-2 rounded-full border border-pink-500/30 md:border-transparent md:bg-transparent md:glass-panel-none md:p-0">
+                                <h3 class="text-2xl font-bold text-cyan-300 serif-font">Месяц 1. Дух и разум</h3>
+                                <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">описание</p>
+                            </div>
+                        </div>
 
-                        <div class="fade-in-section relative group w-full">
-                            <div class="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                            <div class="relative bg-[#1a1025] p-8 rounded-2xl border border-pink-500/30 hover:border-pink-400/60 transition-all h-full">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-xl font-bold text-white leading-tight">Духовная энергия: Смыслы и ценности</h4>
-                                    <span class="text-pink-400 text-2xl"><i class="fas fa-compass"></i></span>
-                                </div>
-                                <p class="text-pink-400 text-xs font-bold uppercase tracking-wider mb-4">Недели 1-2</p>
-                                <p class="text-gray-300 text-sm mb-4 italic">
-                                    Без ответа на вопрос «Зачем?» любая деятельность ведет к выгоранию.
-                                </p>
-                                <ul class="space-y-2 text-sm text-gray-400 mb-4">
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-pink-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Соединяемся</strong> с самым мощным источником внутренней энергии</span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-pink-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Распаковываем</strong> ваши истинные таланты на практическом воркшопе</span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-pink-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Обретаем</strong>  опору через 10 духовных качеств (парамиты)</span></li>
-                                </ul>
-                                <div class="pt-4 border-t border-white/10 text-xs text-pink-300">
-                                    Результат: Осознали природу духовной энергии и научились управлять этим состоянием, чтобы действовать из изобилия.
-                                </div>
-                            </div>
-                            
-                            <div class="hidden md:flex absolute top-1/2 -right-12 w-12 items-center transform -translate-y-1/2">
-                                <div class="h-[2px] w-full bg-pink-500/50 shadow-[0_0_8px_rgba(236,72,153,0.8)]"></div>
-                                <div class="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-pink-500/50 border-b-[6px] border-b-transparent"></div>
-                            </div>
-                        </div>
-
-                        <div class="fade-in-section relative group w-full">
-                            <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                            <div class="relative bg-[#0f172a] p-8 rounded-2xl border border-blue-500/30 hover:border-blue-400/60 transition-all h-full">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-xl font-bold text-white leading-tight">Ментальная энергия: Ясность и Фокус</h4>
-                                    <span class="text-blue-400 text-2xl"><i class="fas fa-brain"></i></span>
-                                </div>
-                                <p class="text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">Недели 3-4</p>
-                                <p class="text-gray-300 text-sm mb-4 italic">
-                                    Когда Смысл найден, Ум должен стать послушным инструментом для реализации ваших намерений
-                                </p>
-                                <ul class="space-y-2 text-sm text-gray-400 mb-4">
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-blue-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Структурируем</strong> хаос в вашей голове </span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-blue-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Учимся</strong> управлять вниманием для максимальной концентрации </span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-blue-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Формируем</strong>  истинные цели и намерения</span></li>
-                                </ul>
-                                <div class="pt-4 border-t border-white/10 text-xs text-blue-300">
-                                    Результат: Голова ясная, решения принимаются быстро и точно.
-                                </div>
-                            </div>
-
-                             <div class="hidden md:flex absolute top-1/2 -right-12 w-12 items-center transform -translate-y-1/2">
-                                <div class="h-[2px] w-full bg-blue-500/50 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
-                                <div class="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-blue-500/50 border-b-[6px] border-b-transparent"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col space-y-8 md:mt-0">
-                         <div class="text-center md:text-left md:pl-8 mb-4 fade-in-section">
-                            <div class="inline-block glass-panel px-6 py-2 rounded-full border border-purple-500/30 md:border-transparent md:bg-transparent md:glass-panel-none md:p-0">
-                                <h3 class="text-2xl font-bold text-purple-300 serif-font">Месяц 2. Эмоции и тело</h3>
-                                <p class="text-xs text-gray-400 uppercase tracking-widest mt-1"> описание</p>
-                            </div>
-                        </div>
-
-                        <div class="fade-in-section relative group w-full">
-                            <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                            <div class="relative bg-[#180f25] p-8 rounded-2xl border border-purple-500/30 hover:border-purple-400/60 transition-all h-full">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-xl font-bold text-white leading-tight">Эмоциональная энергия: Наполнение</h4>
-                                    <span class="text-purple-400 text-2xl"><i class="fas fa-fire"></i></span>
-                                </div>
-                                <p class="text-purple-400 text-xs font-bold uppercase tracking-wider mb-4">Недели 5-6</p>
-                                <p class="text-gray-300 text-sm mb-4 italic">
-                                    Ваши эмоции должны поддерживать ваш Путь, а не саботировать его страхами.
-                                </p>
-                                <ul class="space-y-2 text-sm text-gray-400 mb-4">
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-purple-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Развиваем</strong> эмоциональный интеллект</span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-purple-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Возвращаем</strong> способность искренне радоваться</span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-purple-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Трансформируем</strong> сложные эмоции в ясность и силу</span></li>
-                                </ul>
-                                <div class="pt-4 border-t border-white/10 text-xs text-purple-300">
-                                    Результат: Перестаете бороться с чувствами и начинаете их понимать. Управляете своим состоянием, чтобы жить в радости, а не в тревоге.
-                                </div>
-                            </div>
-                            
-                             <div class="hidden md:flex absolute top-1/2 -left-12 w-12 items-center justify-end transform -translate-y-1/2">
-                                <div class="w-0 h-0 border-t-[6px] border-t-transparent border-r-[10px] border-r-purple-500/50 border-b-[6px] border-b-transparent"></div>
-                                <div class="h-[2px] w-full bg-purple-500/50 shadow-[0_0_8px_rgba(168,85,247,0.8)]"></div>
-                            </div>
-                        </div>
-
-                        <div class="fade-in-section relative group w-full">
-                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                            <div class="relative bg-[#061815] p-8 rounded-2xl border border-emerald-500/30 hover:border-emerald-400/60 transition-all h-full">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="text-xl font-bold text-white leading-tight">Физическая энергия: Воплощение Силы</h4>
-                                    <span class="text-emerald-400 text-2xl"><i class="fas fa-heartbeat"></i></span>
-                                </div>
-                                <p class="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-4">Недели 7-8</p>
-                                <p class="text-gray-300 text-sm mb-4 italic">
-                                    Тело — это проводник вашей энергии в материальный мир. Настраиваем его работу, чтобы хватало сил на воплощение идей
-                                </p>
-                                <ul class="space-y-2 text-sm text-gray-400 mb-4">
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-emerald-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Всстанавливаем</strong> силы через любовь, а не насилие</span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-emerald-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Осваиваем</strong> искусство восстановления</span></li>
-                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-emerald-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Учимся</strong> слышать потребности тела</span></li>
-                                </ul>
-                                <div class="pt-4 border-t border-white/10 text-xs text-emerald-300">
-                                    Результат: Ушла хроническая усталость. Тело стало надежным союзником.
-                                </div>
-                            </div>
-
-                            <div class="hidden md:flex absolute top-1/2 -left-12 w-12 items-center justify-end transform -translate-y-1/2">
-                                <div class="w-0 h-0 border-t-[6px] border-t-transparent border-r-[10px] border-r-emerald-500/50 border-b-[6px] border-b-transparent"></div>
-                                <div class="h-[2px] w-full bg-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 text-center fade-in-section">
-                <div class="p-6 glass-panel rounded-2xl flex flex-col items-center justify-center border border-white/5 hover:bg-white/5 transition-colors">
-                    <i class="fab fa-telegram text-3xl text-cyan-400 mb-3"></i>
-                    <p class="text-sm text-gray-300 font-medium">Онлайн в Telegram</p>
-                </div>
-                <div class="p-6 glass-panel rounded-2xl flex flex-col items-center justify-center border border-white/5 hover:bg-white/5 transition-colors">
-                    <i class="fas fa-video text-3xl text-cyan-400 mb-3"></i>
-                    <p class="text-sm text-gray-300 font-medium">1-2 урока в неделю</p>
-                </div>
-                <div class="p-6 glass-panel rounded-2xl flex flex-col items-center justify-center border border-white/5 hover:bg-white/5 transition-colors">
-                    <i class="fas fa-users text-3xl text-cyan-400 mb-3"></i>
-                    <p class="text-sm text-gray-300 font-medium">Чат и обсуждения</p>
-                </div>
-                <div class="p-6 glass-panel rounded-2xl flex flex-col items-center justify-center border border-white/5 hover:bg-white/5 transition-colors">
-                    <i class="fas fa-calendar-alt text-3xl text-cyan-400 mb-3"></i>
-                    <p class="text-sm text-gray-300 font-medium">2 месяца практики</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="tariffs" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center serif-font mb-16 fade-in-section">Выберите свой формат</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-                
-                <div class="glass-panel p-8 rounded-2xl fade-in-section border border-white/5 hover:border-white/20 transition-all">
-                    <h3 class="text-xl font-bold mb-4">Знакомство</h3>
-                    <div class="text-3xl font-bold mb-6">0 ₽</div>
-                    <p class="text-gray-400 text-sm mb-8">Идеально, чтобы понять подход и познакомиться с темой.</p>
-                    <ul class="space-y-4 mb-8 text-sm text-gray-300">
-                        <li class="flex items-center"><i class="fas fa-check text-gray-500 mr-3"></i> Вводная лекция "Энергия"</li>
-                        <li class="flex items-center"><i class="fas fa-check text-gray-500 mr-3"></i> Доступ сразу после регистрации</li>
-                    </ul>
-                    <button onclick="scrollToContact('Бесплатная лекция')" class="w-full py-3 rounded-lg border border-white/20 hover:bg-white/10 transition-colors text-sm font-medium">
-                        Получить бесплатно
-                    </button>
-                </div>
-
-                <div class="glass-panel p-8 rounded-2xl fade-in-section border border-cyan-500/30 relative transform md:-translate-y-4">
-                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-900 text-cyan-100 text-xs px-3 py-1 rounded-full uppercase tracking-wider border border-cyan-500">Популярный</div>
-                    <h3 class="text-xl font-bold mb-4 text-cyan-300">Со всеми</h3>
-                    <div class="text-3xl font-bold mb-6">20 000 ₽</div>
-                    <p class="text-gray-400 text-sm mb-8">Самостоятельное прохождение в общем поле группы.</p>
-                    <ul class="space-y-4 mb-8 text-sm text-gray-300">
-                        <li class="flex items-center"><i class="fas fa-check text-cyan-500 mr-3"></i> Доступ ко всем урокам (2 мес)</li>
-                        <li class="flex items-center"><i class="fas fa-check text-cyan-500 mr-3"></i> Общий чат участников</li>
-                        <li class="flex items-center"><i class="fas fa-check text-cyan-500 mr-3"></i> Обсуждение итогов недели</li>
-                        <li class="flex items-center"><i class="fas fa-check text-cyan-500 mr-3"></i> Самостоятельная практика</li>
-                    </ul>
-                    <button onclick="scrollToContact('Тариф Со всеми')" class="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-800 to-blue-900 hover:from-cyan-700 hover:to-blue-800 transition-all text-sm font-medium shadow-lg shadow-cyan-900/50">
-                        Выбрать тариф
-                    </button>
-                </div>
-
-                <div class="glass-panel p-8 rounded-2xl fade-in-section border border-purple-500/40 relative">
-                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-purple-900 text-purple-100 text-xs px-3 py-1 rounded-full uppercase tracking-wider border border-purple-500">VIP</div>
-                    <h3 class="text-xl font-bold mb-4 text-purple-300">В сопровождении</h3>
-                    <div class="text-3xl font-bold mb-6">40 000 ₽</div>
-                    <p class="text-gray-400 text-sm mb-8">Глубокая работа с личной обратной связью автора.</p>
-                    <ul class="space-y-4 mb-8 text-sm text-gray-300">
-                        <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-3"></i> <strong>Всё, что в тарифе «Со всеми»</strong></li>
-                        <li class="flex items-center"><i class="fas fa-star text-purple-400 mr-3"></i> Живые эфиры каждую неделю</li>
-                        <li class="flex items-center"><i class="fas fa-star text-purple-400 mr-3"></i> Личная обратная связь</li>
-                        <li class="flex items-center"><i class="fas fa-gift text-purple-400 mr-3"></i> Бонус: Курс «Развитие интуиции»</li>
-                    </ul>
-                    <button onclick="scrollToContact('Тариф В сопровождении')" class="w-full py-3 rounded-lg bg-gradient-to-r from-purple-900 to-indigo-900 hover:from-purple-800 hover:to-indigo-800 transition-all text-sm font-medium border border-purple-500/30">
-                        Иду в глубину
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 bg-gradient-to-t from-black to-transparent">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-panel p-8 md:p-12 rounded-3xl">
-                <h2 class="text-3xl font-bold text-center serif-font mb-4">Регистрация на курс</h2>
-                <p class="text-center text-gray-400 mb-8">Заполните форму, и мы свяжемся с вами для уточнения деталей.</p>
-                
-                <form id="courseForm" class="space-y-6" onsubmit="handleFormSubmit(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Имя</label>
-                            <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="Ваше имя">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Telegram / Телефон</label>
-                            <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="@username или номер">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Выбранный тариф</label>
-                        <select id="tariffSelect" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors [&>option]:bg-gray-900">
-                            <option value="Бесплатная лекция">Бесплатная лекция</option>
-                            <option value="Тариф Со всеми">Тариф "Со всеми" - 20 000₽</option>
-                            <option value="Тариф В сопровождении">Тариф "В сопровождении" - 40 000₽</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Комментарий или вопрос (необязательно)</label>
-                        <textarea rows="3" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="Остались вопросы? Напишите их здесь."></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-bold text-white transition-all transform hover:scale-[1.01] shadow-lg shadow-cyan-900/50">
-                        Отправить заявку
-                    </button>
-                    <p class="text-xs text-center text-gray-500 mt-4">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных.</p>
-                </form>
-            </div>
-
-            <div class="mt-12 text-center text-gray-400 fade-in-section">
-                <p class="mb-4">Остались вопросы?</p>
-                <div class="flex justify-center space-x-6">
-                    <a href="https://t.me/irina_ivanenko11" class="text-2xl hover:text-cyan-400 transition-colors"><i class="fab fa-telegram"></i></a>
-                    
-                </div>
-                <p class="mt-8 text-sm opacity-50">© 2025 Ирина Иваненко. Все права защищены.</p>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // --- Starfield Animation Logic ---
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let stars = [];
-        
-        // Configuration
-        const STAR_COUNT = 150;
-        const SPEED = 0.05;
-
-        function initCanvas() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            
-            stars = [];
-            for (let i = 0; i < STAR_COUNT; i++) {
-                stars.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    size: Math.random() * 2,
-                    opacity: Math.random(),
-                    speed: Math.random() * 0.5 + 0.1
-                });
-            }
-        }
-
-        function animateStars() {
-            ctx.clearRect(0, 0, width, height);
-            
-            // Draw background gradient essentially
-            // (Handled by CSS, but we can add subtle overlays here if needed)
-
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Move star
-                star.y -= star.speed * 0.5; // Move up slowly
-                
-                // Reset if out of bounds
-                if (star.y < 0) {
-                    star.y = height;
-                    star.x = Math.random() * width;
-                }
-                
-                // Twinkle effect
-                star.opacity += (Math.random() - 0.5) * 0.05;
-                if (star.opacity < 0.1) star.opacity = 0.1;
-                if (star.opacity > 1) star.opacity = 1;
-            });
-
-            requestAnimationFrame(animateStars);
-        }
-
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        animateStars();
-
-        // --- Intersection Observer for Fade-in effects ---
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Stop observing once visible if desired, or keep to re-animate
-                    // observer.unobserve(entry.target); 
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // --- Navbar background on scroll ---
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-black/80');
-                navbar.classList.remove('glass-panel'); // Switch to darker solid background
-                navbar.classList.add('backdrop-blur-md');
-            } else {
-                navbar.classList.remove('bg-black/80');
-                navbar.classList.remove('backdrop-blur-md');
-                navbar.classList.add('glass-panel');
-            }
-        });
-
-        // --- Form Handling (НОВАЯ ВЕРСИЯ ДЛЯ ТЕЛЕГРАМ) ---
-        function scrollToContact(tariffName) {
-            const select = document.getElementById('tariffSelect');
-            if(tariffName) {
-                select.value = tariffName;
-            }
-            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            const form = e.target;
-            const btn = form.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-            
-            // 1. Собираем данные из полей
-            // ВАЖНО: Я добавил id="nameInput" и id="contactInput" в HTML ниже, проверьте!
-            const formData = {
-                name: form.querySelector('input[placeholder="Ваше имя"]').value,
-                contact: form.querySelector('input[placeholder="@username или номер"]').value,
-                tariff: document.getElementById('tariffSelect').value,
-                comment: form.querySelector('textarea').value
-            };
-
-            // Меняем кнопку на "Отправка..."
-            btn.innerText = "Отправка...";
-            btn.disabled = true;
-            btn.classList.add('opacity-50');
-
-            try {
-                // 2. Отправляем данные нашему "Секретному почтальону" (/api/telegram)
-                const response = await fetch('/api/telegram', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok && result.success) {
-                    // Успех!
-                    btn.innerText = "Отправлено!";
-                    btn.classList.remove('opacity-50');
-                    btn.classList.add('bg-green-600');
-                    alert("Благодарю вас за заявку 😊 В ближайшее время я вам напишу.");
-                    form.reset();
-                } else {
-                    throw new Error(result.error || 'Ошибка отправки');
-                }
-
-            } catch (error) {
-                // Ошибка
-                console.error('Error:', error);
-                alert("Произошла ошибка при отправке. Пожалуйста, попробуйте позже или напишите нам напрямую.");
-                btn.innerText = "Ошибка";
-                btn.classList.add('bg-red-600');
-            } finally {
-                // Возвращаем кнопку в исходное состояние через 3 секунды
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                    btn.classList.remove('bg-green-600', 'bg-red-600', 'opacity-50');
-                }, 3000);
-            }
-        }
-    </script>
-</body>
-</html>
+                        <div class="fade-in-section relative group w-full">
+                            <div class="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                            <div class="relative bg-[#1a1025] p-8 rounded-2xl border border-pink-500/30 hover:border-pink-400/60 transition-all h-full">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-xl font-bold text-white leading-tight">Духовная энергия: Смыслы и ценности</h4>
+                                    <span class="text-pink-400 text-2xl"><i class="fas fa-compass"></i></span>
+                                </div>
+                                <p class="text-pink-400 text-xs font-bold uppercase tracking-wider mb-4">Недели 1-2</p>
+                                <p class="text-gray-300 text-sm mb-4 italic">
+                                    Без ответа на вопрос «Зачем?» любая деятельность ведет к выгоранию.
+                                </p>
+                                <ul class="space-y-2 text-sm text-gray-400 mb-4">
+                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-pink-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Соединяемся</strong> с самым мощным источником внутренней энергии</span></li>
+                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-pink-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Распаковываем</strong> ваши истинные таланты на практическом воркшопе</span></li>
+                                    <li class="flex items-start"><i class="fas fa-circle text-[6px] text-pink-500 mt-2 mr-2 flex-shrink-0"></i> <span><strong>Обретаем</strong>  опору через 10 духовных качеств (парамиты)</span></li>
+                                </ul>
+                                <div class="pt-4 border-t border-white/10 text-xs text-pink-300">
+                                    Результат: Осознали природу духовной энергии и научились управлять этим состоянием, чтобы действовать из изобилия.
+                                </div>
+                            </div>
