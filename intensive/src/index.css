@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 20% 2%;
+    --foreground: 0 0% 100%;
+
+    --card: 240 20% 4%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 240 20% 4%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 263 70% 66%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 5% 55%;
+
+    --accent: 292 84% 61%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.5rem;
+
+    /* Custom colors */
+    --accent-blue: 217 91% 60%;
+    --accent-purple: 263 70% 66%;
+    --accent-pink: 292 84% 61%;
+    --bg-deep: 240 20% 2%;
+    
+    /* Glass effect */
+    --glass-bg: 0 0% 100% / 0.03;
+    --glass-border: 0 0% 100% / 0.1;
+  }
+
+  .dark {
+    --background: 240 20% 2%;
+    --foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-[hsl(var(--glass-bg))] backdrop-blur-xl border border-[hsl(var(--glass-border))];
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  }
+
+  .text-glow-blue {
+    text-shadow: 0 0 20px hsl(var(--accent-blue) / 0.5);
+  }
+
+  .text-glow-purple {
+    text-shadow: 0 0 20px hsl(var(--accent-purple) / 0.5);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(90deg, hsl(var(--accent-blue)) 0%, hsl(var(--accent-purple)) 50%, hsl(var(--accent-pink)) 100%);
+    background-size: 200% auto;
+    @apply transition-all duration-500;
+  }
+
+  .btn-gradient:hover {
+    background-position: right center;
+    box-shadow: 0 0 30px hsl(var(--accent-purple) / 0.6);
+    @apply -translate-y-0.5;
+  }
+
+  .step-number {
+    background: linear-gradient(135deg, hsl(var(--accent-blue) / 0.4), hsl(var(--accent-purple) / 0.4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tg-glow {
+    @apply transition-all duration-300;
+  }
+
+  .tg-glow:hover {
+    filter: drop-shadow(0 0 15px hsl(var(--accent-blue) / 0.5));
+    @apply scale-105;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+  }
+}
+
+@layer utilities {
+  .space-glow {
+    background: radial-gradient(circle at 20% 30%, hsl(var(--accent-blue) / 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, hsl(var(--accent-purple) / 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, hsl(var(--accent-pink) / 0.05) 0%, transparent 60%);
+  }
+
+  .stars-bg {
+    background-image: 
+      radial-gradient(1px 1px at 10% 10%, hsl(0 0% 100%) 100%, transparent),
+      radial-gradient(1.5px 1.5px at 20% 30%, hsl(0 0% 100%) 100%, transparent),
+      radial-gradient(1px 1px at 70% 60%, hsl(0 0% 100%) 100%, transparent),
+      radial-gradient(2px 2px at 40% 80%, hsl(0 0% 100%) 100%, transparent),
+      radial-gradient(1px 1px at 90% 20%, hsl(0 0% 100%) 100%, transparent);
+    background-size: 200px 200px;
+    opacity: 0.3;
+  }
+}
