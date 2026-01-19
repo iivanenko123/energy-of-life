@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Интенсив: Где мой ресурс?</title>
+  <meta name="description" content="Пошаговый 3-дневный практикум по восполнению энергии. Узнайте, как перестать уставать и начать жить на полную." />
+  <meta name="author" content="РЕСУРС.PRO" />
+
+  <meta property="og:title" content="Интенсив: Где мой ресурс?" />
+  <meta property="og:description" content="Пошаговый 3-дневный практикум по восполнению энергии. Старт 8 января." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Lovable" />
+  <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+  <!-- Шрифт -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #020617;
+      color: #e5e7eb;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .space-glow {
+      background:
+        radial-gradient(circle at 20% 30%, rgba(59,130,246,0.25) 0, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(129,140,248,0.25) 0, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(236,72,153,0.12) 0, transparent 60%);
+    }
+
+    .stars-bg {
+      background-image:
+        radial-gradient(1px 1px at 10% 10%, rgba(255,255,255,0.9) 100%, transparent),
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.9) 100%, transparent),
+        radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.9) 100%, transparent),
+        radial-gradient(2px 2px at 40% 80%, rgba(255,255,255,0.9) 100%, transparent),
+        radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.9) 100%, transparent);
+      background-size: 200px 200px;
+      opacity: 0.3;
+    }
+
+    .glass-card {
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.25);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.8);
+      backdrop-filter: blur(20px);
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #3b82f6, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .btn-gradient {
+      background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+      background-size: 200% auto;
+      transition: all 0.4s ease;
+    }
+
+    .btn-gradient:hover {
+      background-position: right center;
+      box-shadow: 0 0 30px rgba(139,92,246,0.6);
+      transform: translateY(-2px);
+    }
+
+    .step-number {
+      background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(139,92,246,0.4));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .tg-glow {
+      transition: all 0.3s ease;
+    }
+
+    .tg-glow:hover {
+      filter: drop-shadow(0 0 15px rgba(59,130,246,0.6));
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-50">
+
+  <!-- Фон космоса -->
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 space-glow"></div>
+    <div class="absolute inset-0 stars-bg"></div>
+  </div>
+
+  <!-- Навигация -->
+  <nav class="fixed top-0 w-full z-50 px-4 md:px-10 py-5 flex justify-between items-center bg-slate-950/70 backdrop-blur-xl border-b border-slate-800/70">
+    <div class="text-xl md:text-2xl font-black tracking-tight">
+      ЭНЕРГИЯ&nbsp;<span class="gradient-text">ЖИЗНИ</span>
+    </div>
+    <div class="hidden md:flex space-x-8 text-xs md:text-sm font-semibold tracking-[0.18em] uppercase text-slate-400">
+      <a href="#program" class="hover:text-slate-50 transition-colors">Программа</a>
+      <a href="#author" class="hover:text-slate-50 transition-colors">Автор</a>
+      <a href="#register" class="hover:text-slate-50 transition-colors">Присоединиться</a>
+    </div>
+    <a href="#register" class="hidden sm:inline-flex px-5 py-2 rounded-full border border-slate-700 hover:bg-slate-800 transition-all text-xs md:text-sm font-bold">
+      Вход
+    </a>
+  </nav>
+
+  <main class="relative">
+
+    <!-- Hero -->
+    <section class="relative min-h-screen flex flex-col items-center justify-center pt-28 md:pt-32 px-6 text-center">
+      <div class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/40 text-blue-300 text-[10px] md:text-xs font-black uppercase tracking-[0.35em] mb-10">
+        Старт 8 января • Бесплатно
+      </div>
+
+      <h1 class="text-5xl md:text-[104px] font-black leading-[0.9] tracking-tight mb-8">
+        ГДЕ МОЙ<br />
+        <span class="gradient-text drop-shadow-lg">РЕСУРС?</span>
+      </h1>
+
+      <p class="text-slate-300 text-base md:text-2xl max-w-3xl mb-14 font-light leading-relaxed">
+        Пошаговый 3-дневный практикум по восполнению энергии.
+        <br class="hidden md:block" />
+        Узнайте, как перестать уставать и начать жить на полную.
+      </p>
+
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        <a href="#register" class="btn-gradient px-10 md:px-12 py-4 md:py-5 rounded-2xl text-slate-50 font-black text-sm md:text-xl uppercase tracking-[0.35em]">
+          Присоединиться к группе
+        </a>
+        <div class="text-left border-l border-slate-700 pl-6">
+          <p class="text-slate-400 text-[10px] uppercase font-bold tracking-[0.28em]">
+            Дата начала
+          </p>
+          <p class="text-lg md:text-xl font-bold">8 января / 11:00</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Блок про энергию -->
+    <section class="py-20 md:py-28 px-6 relative">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-14">
+          <h2 class="text-3xl md:text-5xl font-black mb-6 uppercase tracking-tight leading-tight">
+            4 типа энергии, без которых
+            <span class="gradient-text"> жизнь перестаёт радовать</span>
+          </h2>
+        </div>
+
+        <div class="glass-card rounded-3xl md:rounded-[32px] p-8 md:p-12 space-y-8">
+          <div class="text-center">
+            <p class="text-xl md:text-2xl font-bold mb-2">
+              Энергия нужна всем.
+            </p>
+            <p class="text-slate-400 text-lg font-light">
+              Не «когда-нибудь потом», а прямо сейчас.
+            </p>
+          </div>
+
+          <div class="w-16 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto"></div>
+
+          <div class="space-y-6 text-lg leading-relaxed">
+            <p class="text-slate-300 font-light">
+              <span class="font-semibold text-slate-50">Когда энергия есть</span> — ты чувствуешь опору внутри, ясность, интерес к жизни, желание действовать.
+            </p>
+            <p class="text-slate-300 font-light">
+              <span class="font-semibold text-slate-50">Когда её нет</span> — даже любимые дела становятся тяжёлыми, появляется усталость, тревога, апатия, ощущение, что «я не вывожу».
+            </p>
+          </div>
+
+          <div class="w-16 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto"></div>
+
+          <div class="text-center py-4">
+            <p class="text-xl md:text-2xl font-medium leading-relaxed">
+              Но дело не в том, что у тебя мало энергии.
+              <br />
+              <span class="text-purple-300">
+                Чаще всего — ты просто берёшь её не из тех источников.
+              </span>
+            </p>
+          </div>
+
+          <div class="w-16 h-px bg-gradient-to-r from-transparent via-pink-500 to-transparent mx-auto"></div>
+
+          <div class="text-center pt-4">
+            <p class="text-slate-300 text-lg font-light mb-8">
+              На этом 3-дневном интенсиве мы разберёмся:
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-8">
+              <div class="flex items-center gap-3 justify-center">
+                <span class="text-2xl">👉</span>
+                <span class="font-medium">
+                  где именно твой ресурс
+                </span>
+              </div>
+              <div class="flex items-center gap-3 justify-center">
+                <span class="text-2xl">👉</span>
+                <span class="font-medium">
+                  какие типы энергии у тебя есть
+                </span>
+              </div>
+              <div class="flex items-center gap-3 justify-center">
+                <span class="text-2xl">👉</span>
+                <span class="font-medium">
+                  почему одни способы работают, а другие — нет
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Для кого интенсив -->
+    <section class="py-20 md:py-28 px-6 relative">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-14">
+          <h2 class="text-3xl md:text-5xl font-black mb-6 uppercase tracking-tight">
+            Для кого этот <span class="gradient-text">интенсив</span>
+          </h2>
+          <p class="text-xl text-slate-300 font-light">
+            Этот интенсив для тебя, если ты:
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
+          <!-- Пункты из ForWhomSection -->
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span class="text-blue-400 text-lg">✓</span>
+            </div>
+            <p class="font-medium leading-relaxed">
+              часто чувствуешь усталость, даже без очевидных причин
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span class="text-blue-400 text-lg">✓</span>
+            </div>
+            <p class="font-medium leading-relaxed">
+              живёшь на напряжении и «надо», а не из желания
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span class="text-blue-400 text-lg">✓</span>
+            </div>
+            <p class="font-medium leading-relaxed">
+              быстро выгораешь или теряешь интерес
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span class="text-blue-400 text-lg">✓</span>
+            </div>
+            <p class="font-medium leading-relaxed">
+              много отдаёшь другим, но себе — в последнюю очередь
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span class="text-blue-400 text-lg">✓</span>
+            </div>
+            <p class="font-medium leading-relaxed">
+              чувствуешь, что потенциал есть, а сил на его реализацию не хватает
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 flex items-start gap-4">
+            <div class="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <span class="text-blue-400 text-lg">✓</span>
+            </div>
+            <p class="font-medium leading-relaxed">
+              хочешь научиться жить из ресурса, а не выживать
+            </p>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-3xl md:rounded-[32px] p-8 md:p-12 text-center border-purple-400/40">
+          <p class="text-lg md:text-xl text-slate-300 font-light leading-relaxed mb-4">
+            Не важно, как ты привык справляться раньше.
+          </p>
+          <p class="text-lg md:text-xl font-medium leading-relaxed">
+            Важно только одно —
+            <span class="text-purple-300">
+              готовность честно посмотреть, где ты теряешь энергию и где она тебя ждёт.
+            </span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Программа -->
+    <section id="program" class="py-24 px-6 relative">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-6xl font-black mb-6 uppercase tracking-tight">
+            Программа обучения
+          </h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- День 1 -->
+          <div class="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
+            <span class="step-number text-7xl font-black absolute top-4 right-6 opacity-20 italic">
+              01
+            </span>
+            <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6">
+              <span class="text-blue-400 text-2xl">⚡</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 uppercase tracking-tight">
+              1 урок
+            </h3>
+            <p class="text-slate-300 leading-relaxed mb-6 font-light">
+              Разбираем физический, эмоциональный, ментальный и духовный уровни. Ищем, куда уходят ваши силы.
+            </p>
+            <div class="text-xs font-bold text-blue-400 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+              Диагностика утечек
+            </div>
+          </div>
+
+          <!-- День 2 -->
+          <div class="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
+            <span class="step-number text-7xl font-black absolute top-4 right-6 opacity-20 italic">
+              02
+            </span>
+            <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6">
+              <span class="text-purple-300 text-2xl">💡</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 uppercase tracking-tight">
+              2 урок
+            </h3>
+            <p class="text-slate-300 leading-relaxed mb-6 font-light">
+              Практики для ясности ума. Техники «быстрого включения» и способы борьбы с инфо-шумом.
+            </p>
+            <div class="text-xs font-bold text-purple-300 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+              Техники здесь и сейчас
+            </div>
+          </div>
+
+          <!-- День 3 -->
+          <div class="glass-card p-8 md:p-10 rounded-3xl relative overflow-hidden">
+            <span class="step-number text-7xl font-black absolute top-4 right-6 opacity-20 italic">
+              03
+            </span>
+            <div class="w-14 h-14 rounded-2xl bg-pink-500/20 flex items-center justify-center mb-6">
+              <span class="text-pink-300 text-2xl">❤️</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 uppercase tracking-tight">
+              3 урок
+            </h3>
+            <p class="text-slate-300 leading-relaxed mb-6 font-light">
+              Связь эмоций и количества сил. Как чувства влияют на продуктивность. План внедрения техник.
+            </p>
+            <div class="text-xs font-bold text-pink-300 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span>
+              Подведение итогов
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Автор -->
+    <section id="author" class="py-24 px-6 relative">
+      <div class="max-w-7xl mx-auto">
+        <div class="glass-card rounded-[36px] p-8 md:p-16 flex flex-col lg:flex-row items-center gap-14 overflow-hidden">
+          <!-- Текст -->
+          <div class="flex-1 text-left">
+            <h2 class="text-3xl md:text-5xl font-black mb-8 leading-tight uppercase tracking-tight">
+              Кто ведет<br />
+              <span class="gradient-text">интенсив?</span>
+            </h2>
+
+            <p class="text-slate-300 text-lg mb-8 font-light leading-relaxed">
+              Эксперт по личной эффективности и управлению состоянием. Более 7 лет помогала людям находить баланс и расти без выгорания.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 flex-shrink-0">
+                  <span class="text-lg">✓</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm mb-1 uppercase tracking-[0.18em]">
+                    500+ учеников
+                  </h4>
+                  <p class="text-xs text-slate-400 font-light leading-snug">
+                    Прошли через авторские программы и изменили жизнь.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-300 flex-shrink-0">
+                  <span class="text-lg">✓</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm mb-1 uppercase tracking-[0.18em]">
+                    7 лет практики
+                  </h4>
+                  <p class="text-xs text-slate-400 font-light leading-snug">
+                    В теме психологии достижений и управления состоянием.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-slate-300/80 italic font-light">
+              «Моя задача — дать вам не теорию, а реальные инструменты, которые работают уже сегодня.»
+            </div>
+          </div>
+
+          <!-- Фото/заглушка -->
+          <div class="w-full lg:w-[420px] relative">
+            <div class="absolute w-[120%] h-[120%] -top-[10%] -left-[10%] bg-purple-500/20 rounded-full blur-3xl -z-10"></div>
+            <div class="aspect-[4/5] rounded-[32px] bg-gradient-to-b from-slate-100/5 to-transparent border border-slate-700/60 flex items-center justify-center overflow-hidden relative">
+              <div class="text-center p-8">
+                <div class="w-20 h-20 rounded-full border border-dashed border-slate-500/60 mx-auto mb-4 flex items-center justify-center text-slate-500">
+                  ☺
+                </div>
+                <p class="text-slate-500 font-bold uppercase tracking-[0.3em] text-[10px] italic">
+                  Фото эксперта
+                </p>
+              </div>
+              <div class="absolute bottom-6 left-6 right-6 glass-card p-4 rounded-2xl border border-slate-600/70">
+                <p class="text-slate-50 font-black text-xl tracking-tight uppercase">
+                  Имя Эксперта
+                </p>
+                <p class="text-blue-300 text-[10px] font-bold uppercase tracking-[0.3em]">
+                  Автор программы
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Telegram CTA -->
+    <section id="register" class="py-32 px-6 relative overflow-hidden">
+      <div class="absolute -bottom-1/2 left-1/2 -translate-x-1/2 w-full h-full bg-blue-500/15 blur-[140px] -z-10 rounded-full"></div>
+
+      <div class="max-w-4xl mx-auto glass-card p-10 md:p-20 rounded-[40px] text-center">
+        <h2 class="text-3xl md:text-5xl font-black mb-8 uppercase tracking-tight">
+          Присоединиться к сообществу
+        </h2>
+        <p class="text-slate-300 text-lg mb-12 font-light max-w-xl mx-auto">
+          Вся основная движуха, ссылки на эфиры и полезные материалы интенсива
+          будут публиковаться в нашей группе в Telegram. Старт — 8 января.
+        </p>
+
+        <a
+          href="https://t.me/irina_ivanenko11"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex flex-col items-center gap-6 group"
+        >
+          <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-blue-500 p-1 tg-glow shadow-[0_0_30px_rgba(59,130,246,0.4)]">
+            <div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center">
+              <span class="text-slate-50 text-4xl md:text-5xl">✈</span>
+            </div>
+          </div>
+          <div class="btn-gradient px-10 md:px-12 py-4 md:py-5 rounded-2xl text-slate-50 font-black text-sm md:text-xl uppercase tracking-[0.35em]">
+            Вступить в Telegram
+          </div>
+        </a>
+
+        <p class="mt-8 text-slate-400 text-xs font-medium tracking-wider italic">
+          * Ссылка откроется в приложении Telegram
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 border-t border-slate-800/70">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 text-slate-200">
+      <div>
+        <div class="text-2xl font-black italic tracking-tight mb-2">
+          ЭНЕРГИЯ&nbsp;<span class="gradient-text">ЖИЗНИ</span><span class="text-blue-400">PRO</span>
+        </div>
+        <p class="text-slate-400 text-sm max-w-xs font-light">
+          Авторские курсы развития осознанности и работы с энергией.
+        </p>
+      </div>
+      <div class="flex flex-col items-center md:items-end gap-4">
+        <div class="flex gap-8 text-slate-400 font-bold uppercase text-[10px] tracking-[0.3em]">
+          <a href="https://t.me/irina_ivanenko11" target="_blank" class="hover:text-slate-50 transition-colors">
+            Telegram
+          </a>
+          <span class="opacity-50 select-none">Instagram</span>
+          <span class="opacity-50 select-none">FAQ</span>
+        </div>
+        <div class="text-slate-500 text-[10px] uppercase font-bold tracking-[0.28em]">
+          © 2025 All Rights Reserved
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

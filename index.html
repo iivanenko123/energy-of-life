@@ -485,51 +485,20 @@
     <section id="contact" class="py-20 bg-gradient-to-t from-black to-transparent">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="glass-panel p-8 md:p-12 rounded-3xl">
-                <h2 class="text-3xl font-bold text-center serif-font mb-4">Регистрация на курс</h2>
-                <p class="text-center text-gray-400 mb-8">Заполните форму, и мы свяжемся с вами для уточнения деталей.</p>
-                
-                <form id="courseForm" class="space-y-6" onsubmit="handleFormSubmit(event)">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Имя</label>
-                            <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="Ваше имя">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-400 mb-2">Telegram / Телефон</label>
-                            <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="@username или номер">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Выбранный тариф</label>
-                        <select id="tariffSelect" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors [&>option]:bg-gray-900">
-                            <option value="Бесплатная лекция">Бесплатная лекция</option>
-                            <option value="Тариф Со всеми">Тариф "Со всеми" - 20 000₽</option>
-                            <option value="Тариф В сопровождении">Тариф "В сопровождении" - 40 000₽</option>
-                        </select>
-                    </div>
+                <h2 class="text-3xl font-bold text-center serif-font mb-4">Отправить заявку</h2>
+                <p class="text-center text-gray-400 mb-10">Свяжитесь со мной в Telegram — это быстрее и удобнее.</p>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-2">Комментарий или вопрос (необязательно)</label>
-                        <textarea rows="3" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors" placeholder="Остались вопросы? Напишите их здесь."></textarea>
-                    </div>
+                <div class="flex justify-center mb-8">
+                    <a href="https://t.me/irina_ivanenko11" target="_blank" rel="noopener" aria-label="Связаться в Telegram" class="group">
+                        <span class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-tr from-cyan-600 to-purple-600 shadow-lg shadow-cyan-900/40 ring-1 ring-white/10 transition-transform group-hover:scale-105">
+                            <i class="fab fa-telegram text-4xl text-white drop-shadow-md"></i>
+                        </span>
+                    </a>
+                </div>
 
-                    <div class="flex items-start mb-6">
-                        <div class="flex items-center h-5">
-                            <input id="privacy-agreement" type="checkbox" required class="w-4 h-4 border border-white/10 rounded bg-white/5 text-cyan-600 focus:ring-cyan-500 focus:ring-offset-gray-900">
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label for="privacy-agreement" class="text-gray-400 font-light">
-                                Я даю свое согласие на обработку персональных данных в соответствии с
-                                <a href="#" target="_blank" class="text-cyan-400 hover:text-cyan-300 hover:underline transition-colors">Политикой конфиденциальности</a> и принимаю условия
-                                <a href="#" target="_blank" class="text-cyan-400 hover:text-cyan-300 hover:underline transition-colors">Публичной оферты</a>.
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-bold text-white transition-all transform hover:scale-[1.01] shadow-lg shadow-cyan-900/50">
-                        Отправить заявку
-                    </button>
-                    </form>
+                <a href="https://t.me/irina_ivanenko11" target="_blank" rel="noopener" class="w-full inline-block text-center py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 rounded-lg font-bold text-white transition-all transform hover:scale-[1.01] shadow-lg shadow-cyan-900/50">
+                    Отправить заявку
+                </a>
             </div>
 
             <div class="mt-12 text-center text-gray-400 fade-in-section">
@@ -639,7 +608,7 @@
         // --- Обработка формы (Отправка в Телеграм) ---
         function scrollToContact(tariffName) {
             const select = document.getElementById('tariffSelect');
-            if(tariffName) {
+            if (select && tariffName) {
                 select.value = tariffName;
             }
             document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
