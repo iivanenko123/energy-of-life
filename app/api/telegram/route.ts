@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 function withCorsHeaders(headers?: HeadersInit) {
   return {
     "Access-Control-Allow-Credentials": "true",

@@ -29,7 +29,7 @@ export default function Starfield() {
     c2d.scale(devicePixelRatio, devicePixelRatio);
 
     const stars: Star[] = [];
-    const COUNT = Math.floor((window.innerWidth * window.innerHeight) / 8000);
+    const COUNT = Math.max(12, Math.floor((window.innerWidth * window.innerHeight) / 8000));
 
     function resetStar(s: Star) {
       s.x = Math.random() * window.innerWidth;
@@ -89,17 +89,25 @@ export default function Starfield() {
 
     let raf = 0;
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    const twinkleFactor = reduceMotion ? 0.2 : 1;
+
     function frame() {
-      raf = requestAnimationFrame(frame);
+      const w0 = window.innerWidth;
+      const h0 = window.innerHeight;
+      if (w0 < 2 || h0 < 2) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
       mouseX += (targetX - mouseX) * 0.03;
       mouseY += (targetY - mouseY) * 0.03;
 
-      c2d.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      c2d.clearRect(0, 0, w0, h0);
 
       // Keep canvas mostly transparent so page gradients remain visible.
       // Add only a subtle vignette to keep "space" feeling.
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+      const w = w0;
+      const h = h0;
       const vignette = c2d.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.5, Math.max(w, h));
       vignette.addColorStop(0, "rgba(0,0,0,0.00)");
       vignette.addColorStop(1, "rgba(0,0,0,0.55)");
@@ -135,18 +143,16 @@ export default function Starfield() {
       c2d.globalCompositeOperation = "lighter";
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
-        s.x += mouseX * s.z * 0.35;
-        s.y += mouseY * s.z * 0.18;
+        // Time-based drift so motion is visible without mouse (e.g. prod, centered cursor).
+        const driftX = Math.sin(t * 0.00011 + i * 0.73) * 0.55;
+        const driftY = Math.cos(t * 0.00009 + i * 0.51) * 0.42;
+        s.x += mouseX * s.z * 0.35 + driftX;
+        s.y += mouseY * s.z * 0.18 + driftY;
 
         // Slow twinkle progression (more planar / calm).
-        const twInc = 0.0022 + (1 - s.z) * 0.0016;
-        s.tw += reduceMotion ? 0 : twInc;
-        if (
-          s.x < -50 ||
-          s.x > window.innerWidth + 50 ||
-          s.y < -50 ||
-          s.y > window.innerHeight + 50
-        ) {
+        const twInc = (0.0022 + (1 - s.z) * 0.0016) * twinkleFactor;
+        s.tw += twInc;
+        if (s.x < -50 || s.x > w + 50 || s.y < -50 || s.y > h + 50) {
           resetStar(s);
         }
 
@@ -169,6 +175,8 @@ export default function Starfield() {
         c2d.fill();
       }
       c2d.globalCompositeOperation = "source-over";
+
+      raf = requestAnimationFrame(frame);
     }
 
     frame();
