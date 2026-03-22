@@ -18,14 +18,15 @@ export default function Starfield() {
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const maybeCtx = canvas.getContext("2d");
+    if (!maybeCtx) return;
+    const c2d: CanvasRenderingContext2D = maybeCtx;
 
-    let width = (canvas.width = window.innerWidth * devicePixelRatio);
-    let height = (canvas.height = window.innerHeight * devicePixelRatio);
+    canvas.width = window.innerWidth * devicePixelRatio;
+    canvas.height = window.innerHeight * devicePixelRatio;
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
-    ctx.scale(devicePixelRatio, devicePixelRatio);
+    c2d.scale(devicePixelRatio, devicePixelRatio);
 
     const stars: Star[] = [];
     const COUNT = Math.floor((window.innerWidth * window.innerHeight) / 8000);
@@ -77,12 +78,12 @@ export default function Starfield() {
     window.addEventListener("mousemove", onMove);
 
     const onResize = () => {
-      width = (canvas.width = window.innerWidth * devicePixelRatio);
-      height = (canvas.height = window.innerHeight * devicePixelRatio);
+      canvas.width = window.innerWidth * devicePixelRatio;
+      canvas.height = window.innerHeight * devicePixelRatio;
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(devicePixelRatio, devicePixelRatio);
+      c2d.setTransform(1, 0, 0, 1, 0, 0);
+      c2d.scale(devicePixelRatio, devicePixelRatio);
     };
     window.addEventListener("resize", onResize);
 
@@ -93,21 +94,21 @@ export default function Starfield() {
       mouseX += (targetX - mouseX) * 0.03;
       mouseY += (targetY - mouseY) * 0.03;
 
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      c2d.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       // Keep canvas mostly transparent so page gradients remain visible.
       // Add only a subtle vignette to keep "space" feeling.
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const vignette = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.5, Math.max(w, h));
+      const vignette = c2d.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.5, Math.max(w, h));
       vignette.addColorStop(0, "rgba(0,0,0,0.00)");
       vignette.addColorStop(1, "rgba(0,0,0,0.55)");
-      ctx.fillStyle = vignette;
-      ctx.fillRect(0, 0, w, h);
+      c2d.fillStyle = vignette;
+      c2d.fillRect(0, 0, w, h);
 
       // Nebula / cosmic-color clouds (soft and slow).
       const t = performance.now() - start;
-      ctx.globalCompositeOperation = "screen";
+      c2d.globalCompositeOperation = "screen";
       for (let i = 0; i < nebulae.length; i++) {
         const n = nebulae[i];
         const wobbleX = Math.sin(t * 0.00005 + n.phase) * w * 0.06;
@@ -118,20 +119,20 @@ export default function Starfield() {
         const radius = Math.max(w, h) * (n.r * 0.85);
 
         const [cr, cg, cb] = n.color;
-        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        const g = c2d.createRadialGradient(cx, cy, 0, cx, cy, radius);
         g.addColorStop(0, `rgba(${cr},${cg},${cb},${0.075 * pulse})`);
         g.addColorStop(0.55, `rgba(${cr},${cg},${cb},${0.03 * pulse})`);
         g.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
 
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-        ctx.fill();
+        c2d.fillStyle = g;
+        c2d.beginPath();
+        c2d.arc(cx, cy, radius, 0, Math.PI * 2);
+        c2d.fill();
       }
-      ctx.globalCompositeOperation = "source-over";
+      c2d.globalCompositeOperation = "source-over";
 
       // star glow color overlays
-      ctx.globalCompositeOperation = "lighter";
+      c2d.globalCompositeOperation = "lighter";
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
         s.x += mouseX * s.z * 0.35;
@@ -154,20 +155,20 @@ export default function Starfield() {
         const radius = s.r * (0.85 + s.z * 0.95);
 
         // cyan / purple twinkle mix
-        ctx.beginPath();
-        const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, radius * 2.2);
+        c2d.beginPath();
+        const g = c2d.createRadialGradient(s.x, s.y, 0, s.x, s.y, radius * 2.2);
         g.addColorStop(0, `rgba(34,211,238,${0.78 * alpha})`);
         g.addColorStop(1, `rgba(168,85,247,0)`);
-        ctx.fillStyle = g;
-        ctx.arc(s.x, s.y, radius * 2.2, 0, Math.PI * 2);
-        ctx.fill();
+        c2d.fillStyle = g;
+        c2d.arc(s.x, s.y, radius * 2.2, 0, Math.PI * 2);
+        c2d.fill();
 
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(255,255,255,${0.85 * alpha})`;
-        ctx.arc(s.x, s.y, radius * 0.6, 0, Math.PI * 2);
-        ctx.fill();
+        c2d.beginPath();
+        c2d.fillStyle = `rgba(255,255,255,${0.85 * alpha})`;
+        c2d.arc(s.x, s.y, radius * 0.6, 0, Math.PI * 2);
+        c2d.fill();
       }
-      ctx.globalCompositeOperation = "source-over";
+      c2d.globalCompositeOperation = "source-over";
     }
 
     frame();
