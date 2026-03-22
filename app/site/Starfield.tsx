@@ -87,6 +87,7 @@ export default function Starfield() {
     window.addEventListener("resize", onResize);
 
     let raf = 0;
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
     function frame() {
       raf = requestAnimationFrame(frame);
       mouseX += (targetX - mouseX) * 0.03;
@@ -94,24 +95,18 @@ export default function Starfield() {
 
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // subtle color gradient background
-      const grad = ctx.createRadialGradient(
-        window.innerWidth * 0.3,
-        window.innerHeight * 0.3,
-        0,
-        window.innerWidth * 0.3,
-        window.innerHeight * 0.3,
-        Math.max(window.innerWidth, window.innerHeight)
-      );
-      grad.addColorStop(0, "rgba(2, 20, 35, 1)");
-      grad.addColorStop(1, "rgba(2, 2, 10, 1)");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+      // Keep canvas mostly transparent so page gradients remain visible.
+      // Add only a subtle vignette to keep "space" feeling.
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const vignette = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.5, Math.max(w, h));
+      vignette.addColorStop(0, "rgba(0,0,0,0.00)");
+      vignette.addColorStop(1, "rgba(0,0,0,0.55)");
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, w, h);
 
       // Nebula / cosmic-color clouds (soft and slow).
       const t = performance.now() - start;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
       ctx.globalCompositeOperation = "screen";
       for (let i = 0; i < nebulae.length; i++) {
         const n = nebulae[i];
@@ -124,8 +119,8 @@ export default function Starfield() {
 
         const [cr, cg, cb] = n.color;
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        g.addColorStop(0, `rgba(${cr},${cg},${cb},${0.12 * pulse})`);
-        g.addColorStop(0.55, `rgba(${cr},${cg},${cb},${0.055 * pulse})`);
+        g.addColorStop(0, `rgba(${cr},${cg},${cb},${0.075 * pulse})`);
+        g.addColorStop(0.55, `rgba(${cr},${cg},${cb},${0.03 * pulse})`);
         g.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
 
         ctx.fillStyle = g;
@@ -143,7 +138,8 @@ export default function Starfield() {
         s.y += mouseY * s.z * 0.18;
 
         // Slow twinkle progression (more planar / calm).
-        s.tw += 0.0018 + (1 - s.z) * 0.0012;
+        const twInc = 0.0022 + (1 - s.z) * 0.0016;
+        s.tw += reduceMotion ? 0 : twInc;
         if (
           s.x < -50 ||
           s.x > window.innerWidth + 50 ||
@@ -154,34 +150,22 @@ export default function Starfield() {
         }
 
         const tw01 = 0.5 + 0.5 * Math.sin(s.tw);
-        const alpha = 0.08 + 0.35 * tw01 * tw01; // smooth + slow
-        const radius = s.r * (0.75 + s.z * 0.9);
+        const alpha = 0.22 + 0.48 * tw01 * tw01; // brighter, still slow
+        const radius = s.r * (0.85 + s.z * 0.95);
 
         // cyan / purple twinkle mix
         ctx.beginPath();
         const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, radius * 2.2);
-        g.addColorStop(0, `rgba(34,211,238,${0.55 * alpha})`);
+        g.addColorStop(0, `rgba(34,211,238,${0.78 * alpha})`);
         g.addColorStop(1, `rgba(168,85,247,0)`);
         ctx.fillStyle = g;
         ctx.arc(s.x, s.y, radius * 2.2, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255,255,255,${0.7 * alpha})`;
+        ctx.fillStyle = `rgba(255,255,255,${0.85 * alpha})`;
         ctx.arc(s.x, s.y, radius * 0.6, 0, Math.PI * 2);
         ctx.fill();
-
-        // Gentle "planar" streak for calm shimmer.
-        if (alpha > 0.22) {
-          const sx = -mouseX * s.z * 10;
-          const sy = -mouseY * s.z * 5;
-          ctx.strokeStyle = `rgba(34,211,238,${0.09 * alpha})`;
-          ctx.lineWidth = Math.max(0.5, radius * 0.15);
-          ctx.beginPath();
-          ctx.moveTo(s.x, s.y);
-          ctx.lineTo(s.x + sx, s.y + sy);
-          ctx.stroke();
-        }
       }
       ctx.globalCompositeOperation = "source-over";
     }
@@ -202,7 +186,7 @@ export default function Starfield() {
       style={{
         position: "fixed",
         inset: 0,
-        zIndex: -10,
+        zIndex: 0,
         pointerEvents: "none"
       }}
     />

@@ -90,8 +90,8 @@ export default function SiteHomePage() {
     <div className="relative z-10 min-h-screen bg-transparent text-slate-50">
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.18),transparent_45%),radial-gradient(circle_at_80%_65%,rgba(168,85,247,0.16),transparent_45%),radial-gradient(circle_at_50%_50%,rgba(244,63,94,0.10),transparent_60%)]" />
-        <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay [background-image:radial-gradient(1px_1px_at_10%_10%,#fff_100%,transparent),radial-gradient(1px_1px_at_30%_70%,#fff_100%,transparent),radial-gradient(1px_1px_at_80%_40%,#fff_100%,transparent)] [background-size:220px_220px]" />
-        <div className="absolute inset-0 opacity-[0.14] mix-blend-screen blur-3xl [background-image:radial-gradient(circle_at_15%_70%,rgba(34,211,238,0.25),transparent_40%),radial-gradient(circle_at_78%_25%,rgba(192,132,252,0.22),transparent_42%),radial-gradient(circle_at_55%_88%,rgba(56,189,248,0.18),transparent_45%)]" />
+        <div className="absolute inset-0 opacity-[0.06] mix-blend-overlay [background-image:radial-gradient(1px_1px_at_10%_10%,#fff_100%,transparent),radial-gradient(1px_1px_at_30%_70%,#fff_100%,transparent),radial-gradient(1px_1px_at_80%_40%,#fff_100%,transparent)] [background-size:220px_220px]" />
+        <div className="absolute inset-0 opacity-[0.10] mix-blend-screen blur-3xl [background-image:radial-gradient(circle_at_15%_70%,rgba(34,211,238,0.25),transparent_40%),radial-gradient(circle_at_78%_25%,rgba(192,132,252,0.22),transparent_42%),radial-gradient(circle_at_55%_88%,rgba(56,189,248,0.18),transparent_45%)]" />
       </div>
 
       <Starfield />
